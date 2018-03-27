@@ -43,9 +43,9 @@ crashreportToViewJson = (report) ->
       # shouldn't happen, should hit line above
     else if k == 'created_at'
       # change the name of this key for display purposes
-      fields.props['created'] = moment(v).fromNow()
+      fields.props['created'] = moment(v).tz('America/New_York').format('YYYY-MM-DD HH:mm:ss')
     else if v instanceof Date
-      fields.props[k] = moment(v).fromNow()
+      fields.props[k] = moment(v).tz('America/New_York').format('YYYY-MM-DD HH:mm:ss')
     else
       fields.props[k] = if v? then v else 'not present'
 
@@ -65,9 +65,9 @@ symfileToViewJson = (symfile, contents) ->
       # pass
     else if k == 'created_at'
       # change the name of this key for display purposes
-      fields.props['created'] = moment(v).fromNow()
+      fields.props['created'] = moment(v).tz('America/New_York').format('YYYY-MM-DD HH:mm:ss')
     else if v instanceof Date
-      fields.props[k] = moment(v).fromNow()
+      fields.props[k] = moment(v).tz('America/New_York').format('YYYY-MM-DD HH:mm:ss')
     else
       fields.props[k] = if v? then v else 'not present'
 
@@ -196,7 +196,7 @@ run = ->
   breakpad.get '/', (req, res, next) ->
     res.redirect '/crashreports'
 
-  breakpad.use paginate.middleware(10, 50)
+  breakpad.use paginate.middleware(15, 50)
   breakpad.get '/crashreports', (req, res, next) ->
     limit = req.query.limit
     offset = req.offset
@@ -238,7 +238,7 @@ run = ->
           page: page
           pageCount: pageCount
 
-  breakpad.use paginate.middleware(10, 50)
+  breakpad.use paginate.middleware(15, 50)
   breakpad.get '/symfiles', (req, res, next) ->
     limit = req.query.limit
     offset = req.offset
